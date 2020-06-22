@@ -64,23 +64,15 @@ class LaserSpeed:
         if raster_step != 0:
             if gear == 0:  # There is no C suffix notation for gear raster step.
                 gear = 1
-            return "V%s%1dG%03d" % (
-                encoded_speed,
-                gear,
-                raster_step
-            )
+            return "V%s%1dG%03d" % (encoded_speed, gear, raster_step)
 
         if d_ratio == 0 or board == "A" or board == "B" or board == "M":
             # We do not need the diagonal code.
             if raster_step == 0:
                 if gear == 0:
-                    return "CV%s1C" % (
-                        encoded_speed
-                    )
+                    return "CV%s1C" % (encoded_speed)
                 else:
-                    return "CV%s%1d" % (
-                        encoded_speed,
-                        gear)
+                    return "CV%s%1d" % (encoded_speed, gear)
         else:
             step_value = min(int(floor(mm_per_second) + 1), 128)
             frequency_kHz = float(mm_per_second) / 25.4
@@ -91,17 +83,9 @@ class LaserSpeed:
             d_value = d_ratio * -m * period_in_ms / float(step_value)
             encoded_diagonal = LaserSpeed.encode_value(d_value)
             if gear == 0:
-                return "CV%s1%03d%sC" % (
-                    encoded_speed,
-                    step_value,
-                    encoded_diagonal
-                )
+                return "CV%s1%03d%sC" % (encoded_speed, step_value, encoded_diagonal)
             else:
-                return "CV%s%1d%03d%s" % (
-                    encoded_speed,
-                    gear,
-                    step_value,
-                    encoded_diagonal)
+                return "CV%s%1d%03d%s" % (encoded_speed, gear, step_value, encoded_diagonal)
 
     @staticmethod
     def parse_speed_code(speed_code):
@@ -176,7 +160,7 @@ class LaserSpeed:
         try:
             return (y - b) / m
         except ZeroDivisionError:
-            return float('inf')
+            return float("inf")
 
     @staticmethod
     def decode_value(code):
