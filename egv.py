@@ -56,6 +56,11 @@ class egv:
 
     def move(self,direction,distance,laser_on=False,angle_dirs=None):
 
+        #vvv########################
+        if distance <=0:
+            raise Exception('distance <=0')
+        #^^^########################
+        
         if angle_dirs==None:
             angle_dirs = [self.Modal_AX,self.Modal_AY]
             
@@ -66,7 +71,15 @@ class egv:
             self.Modal_dist = self.Modal_dist + distance
 
         else:
-            self.flush()
+            #self.flush()
+            #vvv################
+            if direction == self.Modal_dir:
+                self.flush(write_direction=False)
+            else:
+                self.flush(write_direction=True)
+            #^^^################
+                
+
             if laser_on != self.Modal_on:
                 if laser_on:
                     self.write(self.ON)
@@ -82,6 +95,12 @@ class egv:
                     self.write(angle_dirs[1])
                     self.Modal_AY = angle_dirs[1]
                 
+            #VVV##################
+            if direction != self.Modal_dir and distance > 0:
+                #self.write(ord("\n"))
+                self.write(direction)
+            #^^^##################
+
             self.Modal_dir  = direction
             self.Modal_dist = distance
 
@@ -90,10 +109,20 @@ class egv:
             if direction == self.UP or direction == self.DOWN:
                 self.Modal_AY = direction
                 
-        
-    def flush(self,laser_on=None):
+    #vvv####################################
+    #def flush(self,laser_on=None):
+    def flush(self,laser_on=None, write_direction=False):
+
         if self.Modal_dist > 0:
-            self.write(self.Modal_dir)
+            #self.write(self.Modal_dir)
+            if write_direction==True:
+                self.write(self.Modal_dir)
+            else:
+                #self.write(ord("'"))
+                #self.write(self.Modal_dir)
+                #self.write(ord("'"))
+                pass
+    #^^^##################################
             for code in self.make_distance(self.Modal_dist):
                 self.write(code)
         if (laser_on!=None) and (laser_on!=self.Modal_on):

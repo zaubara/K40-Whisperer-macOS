@@ -309,6 +309,10 @@ class SVG_READER(inkex.Effect):
                 if len(parts) == 2:
                     (prop, col) = parts
                     prop = prop.strip().lower()
+
+                    if prop == 'display' and col == "none":
+                        # display is 'none' return without processing group
+                        return
                     
                     if prop == 'k40_action':
                         changed = True
@@ -522,6 +526,8 @@ class SVG_READER(inkex.Effect):
         ##############################################
         ### Get color set at group level
         stroke_group = group.get('stroke')
+        if group.get('display')=='none':
+            return
         ##############################################
         ### Handle 'style' data                   
         style = group.get('style')
