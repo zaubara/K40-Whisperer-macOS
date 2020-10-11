@@ -611,8 +611,8 @@ class Application(Frame):
         self.Label_GoToY   = Label(self.master,text="Y", anchor=CENTER )
 
         # Adjust button wrap locations for macOS
-        self.Open_Button.config(wraplength=20)
-        self.Reload_Button.config(wraplength=20)
+        # self.Open_Button.config(wraplength=20)
+        # self.Reload_Button.config(wraplength=20)
         self.Reng_Button.config(text="Raster Eng.")
         self.Veng_Button.config(text="Vector Eng.")
 
